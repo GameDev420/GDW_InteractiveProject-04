@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdc47f0206f6e6438313b4737bfd728, type: 3}
+  m_Name: FontSelector
+  m_EditorClassIdentifier: Assembly-CSharp::FontSelector
+  PrimaryFont: {fileID: 11400000, guid: 6b601d7f359dfde41afe4104dba0b4d3, type: 2}
+  SecondaryFont: {fileID: 11400000, guid: 87219e7b98a1cb84a9ff269bc03d0cda, type: 2}
+  TertiaryFont: {fileID: 0}

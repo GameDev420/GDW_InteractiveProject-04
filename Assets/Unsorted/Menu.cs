@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
         menuButtons = GetComponentsInChildren<Button>();
     }
 
-    public void Open()
+    void Open()
     {
         if (animator != null) animator.SetTrigger(openAnimationTriggerName);
         else gameObject.SetActive(true);
@@ -28,7 +28,7 @@ public class Menu : MonoBehaviour
 
         if (onOpen != null) onOpen.Invoke();
     }
-    public void Close()
+    void Close()
     {
         if (animator != null) animator.SetTrigger(closeAnimationTriggerName);
         else gameObject.SetActive(false);
@@ -38,13 +38,13 @@ public class Menu : MonoBehaviour
         if (onClose != null) onClose.Invoke();
     }
 
-    public void Open(float delay)
+    public void Open(float delay = 0.0f)
     {
         StopAllCoroutines();
         if (delay > 0) StartCoroutine(WaitToOpenOrClose(delay, true));
         else Open();
     }
-    public void Close(float delay)
+    public void Close(float delay = 0.0f)
     {
         StopAllCoroutines();
 

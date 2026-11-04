@@ -13,6 +13,8 @@ public class PlayerManager : MonoBehaviour
     public static event PlayerEventHandler PlayerJoined;
     public static event PlayerEventHandler PlayerLeft;
     public static readonly List<PlayerController> Players = new();
+
+    [SerializeField] Transform[] spawnPoints = new Transform[0];
     
     private void Awake() => ResetStaticFields();
     private void OnDestroy() => ResetStaticFields();
@@ -25,6 +27,12 @@ public class PlayerManager : MonoBehaviour
 
     public void OnPlayerJoined(PlayerInput player)
     {
+        if (spawnPoints.Length > 0)
+        {
+            var point = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            player.transform.SetPositionAndRotation(point.position, point.rotation);
+        }
+
         var controller = player.GetComponent<PlayerController>();
         Players.Add(controller);
         if (PlayerJoined != null) PlayerJoined.Invoke(controller);

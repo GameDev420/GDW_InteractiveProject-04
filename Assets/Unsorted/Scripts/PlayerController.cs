@@ -50,7 +50,9 @@ public class PlayerController : MonoBehaviour
 
         public BlobButtons ReadButtons()
     {
+
         BlobButtons buttons = new BlobButtons();
+        if (move == null) return buttons;
 
         float stickx = move.ReadValue<Vector2>().x;
         if (Mathf.Abs(stickx) > StickDeadzone) buttons.movex = stickx;

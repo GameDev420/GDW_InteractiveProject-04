@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9952b9c27045f540b9ed0ee4207d91d, type: 3}
+  m_Name: Shrink
+  m_EditorClassIdentifier: Assembly-CSharp::SizePowerUpData
+  DisplayName: Shrink
+  Duration: 5
+  PickUpModel: {fileID: 3187152005231847421, guid: 076170e4233278e43ac376444b5f30aa, type: 3}

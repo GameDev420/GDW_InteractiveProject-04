@@ -8,7 +8,9 @@ public partial class BlobController
     public float maxfallspeed = 26f;
     public float shorthopmultiplier = 0.5f; 
     public float latejumptime = 0.1f; 
-    public float earlyjumptime = 0.1f; 
+    public float earlyjumptime = 0.1f;
+
+    public PlayableSFXObject jumpSFX; // SFX stuff - can be replaced later
 
     bool canshortenjump;
     float latejumptimer;
@@ -35,6 +37,8 @@ public partial class BlobController
     {
         if (earlyjumptimer <= 0f)
             return;
+
+        if (IsGrounded && jumpSFX != null && jumpSFX.SFX != null) jumpSFX.SFX.TryPlay(this);
 
         if (latejumptimer > 0f)
         {

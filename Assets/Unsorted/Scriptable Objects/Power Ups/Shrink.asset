@@ -16,4 +16,5 @@ MonoBehaviour:
   Duration: 5
   PickUpModel: {fileID: 3187152005231847421, guid: 076170e4233278e43ac376444b5f30aa, type: 3}
   VFXPrefab: {fileID: 0}
+  SFX: {fileID: 11400000, guid: 58db02ff6eb0a4c4e90c46d59ac4e35e, type: 2}
   sizeMultiplier: 0.65

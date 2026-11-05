@@ -124,7 +124,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1432460878200485868}
   - component: {fileID: 8890806333115746557}
-  - component: {fileID: 2333538369219912576}
   - component: {fileID: -8682104248942135053}
   - component: {fileID: 152906208580429237}
   - component: {fileID: 7238995962622584994}
@@ -278,25 +277,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &2333538369219912576
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5207869201672259332}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66558fd6fca473b46bea6d77bab240df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeathController
-  deathViewportBounds: {x: 1.08, y: 1.08}
-  localPlayerOffset: {x: 0, y: 0.5, z: 0}
-  openMenuOnGameOver: 1
-  gameOverMenu: {fileID: 0}
-  onGameOver:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &-8682104248942135053
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,6 +455,7 @@ MonoBehaviour:
   fireangle: 60
   hookspeed: 70
   maxrange: 22
+  grappleSFX: {fileID: 11400000, guid: 49b23e049d3ae73409c4dee41c0f515d, type: 2}
 --- !u!114 &8397137947565723042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -495,6 +476,7 @@ MonoBehaviour:
   shorthopmultiplier: 0.5
   latejumptime: 0.1
   earlyjumptime: 0.1
+  jumpSFX: {fileID: 11400000, guid: 7db1489f491912c42bd719976638d0b0, type: 2}
   swingdrive: 0
   maxswingspeed: 0
   swingreleaseboost: 0

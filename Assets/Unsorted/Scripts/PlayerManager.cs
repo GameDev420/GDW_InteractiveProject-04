@@ -18,11 +18,11 @@ public class PlayerManager : MonoBehaviour
     
     private void Awake() => ResetStaticFields();
     private void OnDestroy() => ResetStaticFields();
-
+    
     public void RemovePlayer(int index)
     {
         if (index < 0 || index >= Players.Count) return;
-        Players[index].Remove();
+        //Players[index].Remove();
     }
 
     public void OnPlayerJoined(PlayerInput player)
@@ -40,7 +40,7 @@ public class PlayerManager : MonoBehaviour
     public void OnPlayerLeft(PlayerInput player)
     {
         var controller = player.GetComponent<PlayerController>();
-        if (Players.Contains(controller)) Players.Remove(controller);
+        //if (Players.Contains(controller)) Players.Remove(controller);
         if (PlayerLeft != null) PlayerLeft.Invoke(controller);
     }
 

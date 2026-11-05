@@ -27,6 +27,7 @@ public abstract class PowerUpInstance
         pickupTime = Time.time;
 
         if (Data.VFXPrefab != null && args.Player.TryGetComponent(out PlayerVFX vfxComponent)) vfxComponent.SpawnVFX(Data.VFXPrefab, Data.Duration);
+        if (Data.SFX != null && Data.SFX.SFX != null) Data.SFX.SFX.TryPlay(args.Player);
     }
 
     public virtual void RemovePowerUp(PowerUpArgs args)

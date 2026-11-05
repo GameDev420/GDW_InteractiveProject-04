@@ -10,6 +10,7 @@ public class GrappleHook : MonoBehaviour
     public float hookspeed = 70f;
     public float maxrange = 22f;
 
+    public PlayableSFXObject grappleSFX;
 
     public HookState State { get; private set; }
     public Vector3 Tip { get; private set; }
@@ -57,6 +58,8 @@ public class GrappleHook : MonoBehaviour
         flydirection = new Vector3(facing * Mathf.Cos(radians), Mathf.Sin(radians), 0f);
         Tip = firedfrom = Middle();
         State = HookState.Flying;
+
+        if (grappleSFX != null && grappleSFX.SFX != null) grappleSFX.SFX.TryPlay(this);
     }
 
     void Fly(float seconds)

@@ -43,8 +43,9 @@ public class TempMovement : MonoBehaviour
             if (speedMultipliers.Count > 0) multiplier = avg / speedMultipliers.Count;
         }
 
-        var movement = Camera.main.transform.TransformDirection(moveInput.x, 0.0f, horizontalOnly ? 0.0f : moveInput.y);
-        movement = moveSpeed * multiplier * Time.deltaTime * Vector3.ProjectOnPlane(movement, Vector3.up).normalized;
+        //var movement = Camera.main.transform.TransformDirection(moveInput.x, 0.0f, horizontalOnly ? 0.0f : moveInput.y);
+        //movement = moveSpeed * multiplier * Time.deltaTime * Vector3.ProjectOnPlane(movement, Vector3.up).normalized;
+        var movement = moveSpeed * multiplier * Time.deltaTime * new Vector3(moveInput.x, 0.0f, horizontalOnly ? 0.0f : moveInput.y).normalized;
         transform.Translate(movement);
     }
 

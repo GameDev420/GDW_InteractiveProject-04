@@ -25,11 +25,13 @@ public abstract class PowerUpInstance
     public virtual void Pickup(PowerUpArgs args)
     {
         pickupTime = Time.time;
+
+        if (Data.VFXPrefab != null && args.Player.TryGetComponent(out PlayerVFX vfxComponent)) vfxComponent.SpawnVFX(Data.VFXPrefab, Data.Duration);
     }
 
     public virtual void RemovePowerUp(PowerUpArgs args)
     {
-        Debug.Log("Removing powerup.");
+        
     }
 
     public virtual bool CanPickup(PowerUpArgs args)

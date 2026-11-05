@@ -2,13 +2,23 @@ using UnityEngine;
 
 public class SizePowerUpInstance : PowerUpInstance
 {
-    public SizePowerUpInstance(PowerUpData _Data) : base(_Data)
+    float sizeMultiplier;
+
+    public SizePowerUpInstance(PowerUpData _Data, float _SizeMultiplier) : base(_Data)
     {
-        
+        sizeMultiplier = _SizeMultiplier;
     }
     public override void Pickup(PowerUpArgs args)
     {
         base.Pickup(args);
-        Debug.LogError("Size Power Up not implemented.");
+
+        if (args.Player.TryGetComponent(out PlayerSize sizeComponent)) sizeComponent.SetSizeMultiplier(sizeMultiplier);
+    }
+
+    public override void RemovePowerUp(PowerUpArgs args)
+    {
+        base.RemovePowerUp(args);
+
+        if (args.Player.TryGetComponent(out PlayerSize sizeComponent)) sizeComponent.SetSizeMultiplier(1.0f);
     }
 }

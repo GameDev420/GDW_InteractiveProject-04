@@ -2,15 +2,24 @@ using UnityEngine;
 
 public class JumpPowerUpInstance : PowerUpInstance
 {
-    public JumpPowerUpInstance(PowerUpData _Data) : base(_Data)
-    {
+    float jumpMultiplier;
 
+    public JumpPowerUpInstance(PowerUpData _Data, float _JumpMultiplier) : base(_Data)
+    {
+        jumpMultiplier = _JumpMultiplier;
     }
 
     public override void Pickup(PowerUpArgs args)
     {
         base.Pickup(args);
 
-        Debug.LogError("Jump Power Up not implemented.");
+        if (args.Player.TryGetComponent(out BlobController blob)) blob.jumpspeed *= jumpMultiplier;
+    }
+
+    public override void RemovePowerUp(PowerUpArgs args)
+    {
+        base.RemovePowerUp(args);
+
+        if (args.Player.TryGetComponent(out BlobController blob)) blob.jumpspeed /= jumpMultiplier;
     }
 }

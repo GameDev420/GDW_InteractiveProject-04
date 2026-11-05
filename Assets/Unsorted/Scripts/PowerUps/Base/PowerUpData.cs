@@ -8,6 +8,7 @@ public abstract class PowerUpData : ScriptableObject
 
     [Header("Appearance")]
     public GameObject PickUpModel;
+    public GameObject VFXPrefab;
 
 
     // Probably not the best way to do this, but simple enough for the project.

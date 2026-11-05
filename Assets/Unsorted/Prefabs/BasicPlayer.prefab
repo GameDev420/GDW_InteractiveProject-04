@@ -131,6 +131,8 @@ GameObject:
   - component: {fileID: 8020250673592953376}
   - component: {fileID: 5591624272620326799}
   - component: {fileID: 8397137947565723042}
+  - component: {fileID: 9060219589749713853}
+  - component: {fileID: -6598217428609146182}
   m_Layer: 7
   m_Name: BasicPlayer
   m_TagString: Untagged
@@ -321,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 933649de9b84bf540acdc47dcd9568ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TempMovement
+  horizontalOnly: 1
   moveSpeed: 5
 --- !u!143 &7238995962622584994
 CharacterController:
@@ -498,3 +501,28 @@ MonoBehaviour:
   walljumpsidespeed: 10
   wallslidespeed: 4
   nosteertime: 0.14
+--- !u!114 &9060219589749713853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207869201672259332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a878bd1a2c066a84c9641b48d3300451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerVFX
+  localVFXPositionOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &-6598217428609146182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207869201672259332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72e80e2671759e642ac84d98dd897673, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSize

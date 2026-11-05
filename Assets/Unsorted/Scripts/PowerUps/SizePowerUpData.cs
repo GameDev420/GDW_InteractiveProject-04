@@ -3,5 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SizePowerUpData", menuName = "Scriptable Objects/Power Ups/Size Change")]
 public class SizePowerUpData : PowerUpData
 {
-    public override PowerUpInstance CreatePowerUpInstance() => new SizePowerUpInstance(this);
+    [SerializeField] [Min(0.4f)] float sizeMultiplier = 1.0f;
+    public override PowerUpInstance CreatePowerUpInstance() => new SizePowerUpInstance(this, sizeMultiplier);
 }

@@ -507,7 +507,7 @@
                 {
                     "name": "",
                     "id": "b7b7b16b-f405-4a1f-815f-ed21e8d5d6c7",
-                    "path": "<XInputController>/buttonWest",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",

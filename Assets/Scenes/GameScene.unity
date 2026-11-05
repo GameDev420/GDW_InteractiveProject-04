@@ -779,8 +779,8 @@ MonoBehaviour:
   onGameOver:
     m_PersistentCalls:
       m_Calls: []
-  debugMode: 1
-  numAlivePlayersToWin: 0
+  debugMode: 0
+  numAlivePlayersToWin: 1
 --- !u!114 &214967213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6986,16 +6986,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89c36bddf849c84eb878d5e1eea6059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  progress: 0
-  laps: 0
   allowLeadingPlayerToControlPosition: 1
-  leadingPlayerWeightMultiplier: 2
-  camToPlayerProgressOffset: 0.15
+  leadingPlayerWeightMultiplier: 5
+  camToPlayerProgressOffset: 0.1
   pathMoveSpeed: 1.8
   playerRotationWeight: 0.15
   zRotationLock: 1
   speedIncreasePerSecond: 0.025
-  worldSpacePlayerOffset: {x: 0, y: 5, z: -16.33}
+  worldSpacePlayerOffset: {x: 0, y: 5, z: -18}
   path:
   - useRotation: 0
     speedMultiplier: 0.675

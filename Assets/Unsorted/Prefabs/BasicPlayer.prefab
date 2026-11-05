@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   movementComponent: {fileID: 8890806333115746557}
-  visuals: {fileID: 5207869201672259332}
+  visuals: {fileID: 6838745488915392486}
 --- !u!114 &152906208580429237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,6 +679,11 @@ Animator:
 --- !u!4 &6170998451223608668 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b31a1e95d53094844bc0b981c8d15cce, type: 3}
+  m_PrefabInstance: {fileID: 5920389732542864055}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6838745488915392486 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b31a1e95d53094844bc0b981c8d15cce, type: 3}
   m_PrefabInstance: {fileID: 5920389732542864055}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7912371789691690334 stripped

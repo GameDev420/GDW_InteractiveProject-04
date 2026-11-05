@@ -8,4 +8,6 @@ public class MainMenuController : Menu
     {
         SceneLoader.Instance.LoadScene(gameSceneIndex);
     }
+
+    public void CloseGame() => Application.Quit();
 }

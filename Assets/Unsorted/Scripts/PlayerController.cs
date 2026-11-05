@@ -18,7 +18,6 @@ public struct BlobButtons
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] MonoBehaviour movementComponent;
     [SerializeField] GameObject visuals;
 
     bool isDead;
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();  
+        playerInput = GetComponent<PlayerInput>();
     }
 
         void Start()
@@ -70,7 +69,6 @@ public class PlayerController : MonoBehaviour
         if (isDead) return;
 
         visuals.SetActive(false);
-        if (movementComponent != null) movementComponent.enabled = false;
 
         isDead = true;
     }
@@ -78,7 +76,6 @@ public class PlayerController : MonoBehaviour
     public void Respawn()
     {
         visuals.SetActive(true);
-        if (movementComponent != null) movementComponent.enabled = true;
         isDead = false;
     }
 

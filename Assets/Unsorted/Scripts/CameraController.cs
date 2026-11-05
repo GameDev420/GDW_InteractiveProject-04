@@ -51,6 +51,8 @@ public class CameraController : MonoBehaviour
     Vector3 uninfluencedPosition;
     Quaternion uninfluencedRot; // Rotation if players didn't exist (used to slerp between player and uninfluenced rotations)
 
+    float maxProgress;
+
     uint numLaps = 0;
     
     float LapProgress
@@ -141,14 +143,16 @@ public class CameraController : MonoBehaviour
         // HOLY INEFFICIENCY BTW IM SO SORRY (this whole section, esp. running each frame)
         // Calculate leading player
         var leadingPlayer = CheckpointManager.Instance.GetLeadingPlayer();
+        var leadingProgress = CheckpointManager.Instance.GetOverallProgress(leadingPlayer);
+        if (leadingProgress > maxProgress) maxProgress = leadingProgress;
 
         // Uninfluenced Camera movement
-        if (!allowLeadingPlayerToControlPosition || OverallProgress + camToPlayerProgressOffset > CheckpointManager.Instance.GetOverallProgress(leadingPlayer))
+        if (!allowLeadingPlayerToControlPosition || OverallProgress + camToPlayerProgressOffset > maxProgress)
             smoothedPosition.TargetValue = uninfluencedPosition;
         // Follow leading player (if they're ahead of camera)
         else
         {
-            var validPlayers = 0;
+            /*var validPlayers = 0;
 
             // Different from the average rotation position since the leading player may be weighted differently in each
             // Still could definitely be optimized
@@ -162,9 +166,11 @@ public class CameraController : MonoBehaviour
                 else avgPos += player.transform.position;
 
                 validPlayers++;
-            }
+            }*/
 
-            smoothedPosition.TargetValue = (avgPos / Mathf.Max(validPlayers + leadingPlayerWeightMultiplier - 1, 1)) + worldSpacePlayerOffset;
+            //smoothedPosition.TargetValue = (avgPos / Mathf.Max(validPlayers + leadingPlayerWeightMultiplier - 1, 1)) + worldSpacePlayerOffset;
+
+            smoothedPosition.TargetValue = leadingPlayer.transform.position + worldSpacePlayerOffset;
         }
 
 
@@ -182,7 +188,7 @@ public class CameraController : MonoBehaviour
 
         for (int i = 0; i < PlayerManager.Players.Count; i++)
         {
-            if (PlayerManager.Players[i] == null) continue;
+            if (PlayerManager.Players[i] == null || PlayerManager.Players[i].IsDead) continue;
             avgPos += PlayerManager.Players[i].transform.position;
 
             validCount++;

@@ -19,11 +19,12 @@ public class CameraController : MonoBehaviour
     const float SquareMarginOfPositionalError = 0.01f;
 
     public float progress;
-    public int laps;
+    public uint laps;
 
     [Header("Config")]
-    [Tooltip("WORK IN PROGRESS: LIKELY BROKEN.")]
     [SerializeField] bool allowLeadingPlayerToControlPosition = false;
+    [SerializeField] [Min(0.0f)] float leadingPlayerWeightMultiplier = 2.0f;
+    [SerializeField] [Range(-1.0f, 1.0f)] float camToPlayerProgressOffset = 0.0f;
     [Tooltip("In meters per second.")]
     [SerializeField] float pathMoveSpeed = 2.0f;
     [SerializeField][Range(0.0f, 1.0f)] float playerRotationWeight = 0.2f;
@@ -47,28 +48,32 @@ public class CameraController : MonoBehaviour
     SmoothedQuaternion smoothedRotation;
 
     bool movementEnabled = false;
-    int currentPathPoint;
+    int currentPathPoint; // the index of the DESIRED path point (the one we're moving toward)
+    Vector3 uninfluencedPosition;
     Quaternion uninfluencedRot; // Rotation if players didn't exist (used to slerp between player and uninfluenced rotations)
 
-    int numLaps = 0;
+    uint numLaps = 0;
     
-    // Holy inefficiency btw
-    // ^ update: AND READABILITY
     float LapProgress
-        => Mathf.Clamp01(
-            currentPathPoint / Mathf.Max(path.Length, 1.0f)
-            + Vector3Extensions.InverseLerp(
-                path[currentPathPoint].point.position,
-                path[(currentPathPoint + 1) % path.Length].point.position,
-                Vector3.Project(
-                    path[(currentPathPoint + 1) % path.Length].point.position - regularPosition,
-                    path[(currentPathPoint + 1) % path.Length].point.position - path[currentPathPoint].point.position) + path[currentPathPoint].point.position
-                )
-            * (1.0f / Mathf.Max(path.Length, 1.0f)));
+    {
+        get
+        {
+            var step = 1.0f / Mathf.Max(path.Length, 1.0f);
+
+            // Only doing this because modulo operation doesn't work properly with negatives (iirc)
+            var prevDesiredPointIndex = currentPathPoint == 0 ? path.Length - 1 : currentPathPoint - 1;
+
+            var currentPointProgress = Vector3Extensions.InverseLerp(
+                path[prevDesiredPointIndex].point.position,
+                path[currentPathPoint % path.Length].point.position,
+                uninfluencedPosition
+            );
+            return Mathf.Clamp01((currentPathPoint - 1) * step + currentPointProgress * step);
+        }
+    }
     float OverallProgress => numLaps + LapProgress;
 
     // Stores camera's position on the path WITHOUT following the leading player.
-    Vector3 regularPosition;
 
     #endregion
 
@@ -79,7 +84,7 @@ public class CameraController : MonoBehaviour
         uninfluencedRot = transform.rotation;
 
         smoothedPosition = new SmoothedVector3(positionSmoothConfig);
-        smoothedPosition.SmoothedValue = smoothedPosition.TargetValue = regularPosition = transform.position;
+        smoothedPosition.SmoothedValue = smoothedPosition.TargetValue = uninfluencedPosition = transform.position;
 
         smoothedRotation = new SmoothedQuaternion(rotationSmoothConfig);
         smoothedRotation.SmoothedValue = smoothedRotation.TargetValue = transform.rotation;
@@ -127,7 +132,7 @@ public class CameraController : MonoBehaviour
 
         // Check if we should move to next path point
         // Done before move logic to ensure it's consistent with rotation, even if it's technically delayed by a frame.
-        if ((p.point.position - regularPosition).sqrMagnitude <= SquareMarginOfPositionalError)
+        if ((p.point.position - uninfluencedPosition).sqrMagnitude <= SquareMarginOfPositionalError)
         {
             currentPathPoint = (currentPathPoint + 1) % path.Length;
             if (currentPathPoint == 0) numLaps++;
@@ -135,16 +140,37 @@ public class CameraController : MonoBehaviour
             OnNewPathPoint(p);
         }
 
-        regularPosition += pathMoveSpeed * p.speedMultiplier * deltaTime * (p.point.position - regularPosition).normalized;
+        uninfluencedPosition += pathMoveSpeed * p.speedMultiplier * deltaTime * (p.point.position - uninfluencedPosition).normalized;
 
-        if (allowLeadingPlayerToControlPosition)
+        // HOLY INEFFICIENCY BTW IM SO SORRY (this whole section, esp. running each frame)
+        // Calculate leading player
+        var leadingPlayer = CheckpointManager.Instance.GetLeadingPlayer();
+
+        // Uninfluenced Camera movement
+        if (!allowLeadingPlayerToControlPosition || OverallProgress + camToPlayerProgressOffset > CheckpointManager.Instance.GetOverallProgress(leadingPlayer))
+            smoothedPosition.TargetValue = uninfluencedPosition;
+        // Follow leading player (if they're ahead of camera)
+        else
         {
-            // HOLY INEFFICIENCY BTW IM SO SORRY
-            var leadingPlayer = CheckpointManager.Instance.GetLeadingPlayer();
-            if (OverallProgress > CheckpointManager.Instance.GetOverallProgress(leadingPlayer)) smoothedPosition.TargetValue = regularPosition;
-            else smoothedPosition.TargetValue = leadingPlayer.transform.position + worldSpacePlayerOffset;
+            var validPlayers = 0;
+
+            // Different from the average rotation position since the leading player may be weighted differently in each
+            // Still could definitely be optimized
+            var avgPos = Vector3.zero;
+            for (int i = 0; i < PlayerManager.Players.Count; i++)
+            {
+                var player = PlayerManager.Players[i];
+                if (player == null || player.IsDead) continue;
+
+                if (player.gameObject == leadingPlayer.gameObject) avgPos += player.transform.position * leadingPlayerWeightMultiplier;
+                else avgPos += player.transform.position;
+
+                validPlayers++;
+            }
+
+            smoothedPosition.TargetValue = (avgPos / Mathf.Max(validPlayers + leadingPlayerWeightMultiplier - 1, 1)) + worldSpacePlayerOffset;
         }
-        else smoothedPosition.TargetValue = regularPosition;
+
 
         smoothedPosition.Smooth(deltaTime);
         transform.position = smoothedPosition.SmoothedValue;
@@ -166,7 +192,7 @@ public class CameraController : MonoBehaviour
             validCount++;
         }
 
-        avgPos /= validCount; // TODO: divide by total weight
+        avgPos /= validCount;
 
         smoothedRotation.TargetValue = Quaternion.Lerp(uninfluencedRot, Quaternion.LookRotation((avgPos - transform.position).normalized, Vector3.up), playerRotationWeight);
         //smoothedRotation.TargetValue = Quaternion.Euler(Vector3.Lerp(smoothedRotation.TargetValue.eulerAngles, Quaternion.LookRotation((avgPos - transform.position).normalized, Vector3.up).eulerAngles, playerRotationWeight));

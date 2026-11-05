@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SizePowerUpInstance : PowerUpInstance
 {
-    float sizeMultiplier;
+    readonly float sizeMultiplier;
 
     public SizePowerUpInstance(PowerUpData _Data, float _SizeMultiplier) : base(_Data)
     {

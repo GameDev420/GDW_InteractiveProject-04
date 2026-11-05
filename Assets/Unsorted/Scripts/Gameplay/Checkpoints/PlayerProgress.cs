@@ -27,7 +27,7 @@ public class PlayerProgress : MonoBehaviour
     {
         checkpointIndex = currentIndex;
 
-        currentCheckpoint = nextCheckpoint != null ? nextCheckpoint : CheckpointManager.Instance.GetCheckpointFromIndex(currentIndex);
+        currentCheckpoint = CheckpointManager.Instance.GetCheckpointFromIndex(currentIndex);
 
         nextCheckpoint = CheckpointManager.Instance.GetCheckpointFromIndex(currentIndex + 1);
 

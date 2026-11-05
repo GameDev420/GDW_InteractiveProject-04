@@ -8,6 +8,9 @@ public class CheckpointManager : MonoBehaviour
     [SerializeField] Rigidbody[] checkpoints = new Rigidbody[0];
     readonly List<PlayerProgress> progression = new();
 
+    public int NumCheckpoints => checkpoints.Length;
+
+
     private void Awake()
     {
         Instance = this;
@@ -49,7 +52,10 @@ public class CheckpointManager : MonoBehaviour
 
         return false;
     }
-    public Transform GetCheckpointFromIndex(uint index) => checkpoints[index % checkpoints.Length].transform;
+    public Transform GetCheckpointFromIndex(uint index)
+    {
+        return checkpoints[index % checkpoints.Length].transform;
+    }
 
     public PlayerProgress GetLeadingPlayer()
     {
@@ -80,8 +86,10 @@ public class CheckpointManager : MonoBehaviour
 
     public float GetLapProgress(PlayerProgress player)
     {
-        var step = 1.0f / checkpoints.Length;
+        var step = 1.0f / Mathf.Max(checkpoints.Length, 1);
         return Mathf.Clamp01(player.CheckpointIndex * step + player.Progress * step);
     }
+
+    // This would return negative during the first checkpoint of the first lap, thus .
     public float GetOverallProgress(PlayerProgress player) => player.LapsCompleted + GetLapProgress(player);
 }

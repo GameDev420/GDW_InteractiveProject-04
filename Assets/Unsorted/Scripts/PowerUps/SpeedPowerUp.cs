@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpeedPowerUpInstance : PowerUpInstance
 {
-    float speedMultiplier; // Would add a better solution for this if the project wasn't due so fast
+    readonly float speedMultiplier; // Would add a better solution for this if the project wasn't due so fast
 
     public SpeedPowerUpInstance(PowerUpData _Data, float _SpeedMultiplier) : base(_Data)
     {

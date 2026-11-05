@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class JumpPowerUpInstance : PowerUpInstance
 {
-    float jumpMultiplier;
+    readonly float jumpMultiplier;
 
     public JumpPowerUpInstance(PowerUpData _Data, float _JumpMultiplier) : base(_Data)
     {

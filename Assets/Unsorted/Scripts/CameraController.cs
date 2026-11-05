@@ -18,12 +18,11 @@ public class CameraController : MonoBehaviour
 
     const float SquareMarginOfPositionalError = 0.01f;
 
-    public float progress;
-    public uint laps;
 
     [Header("Config")]
     [SerializeField] bool allowLeadingPlayerToControlPosition = false;
     [SerializeField] [Min(0.0f)] float leadingPlayerWeightMultiplier = 2.0f;
+    [Tooltip("Adjust this to change how far/behind the camera must be from player progress in the current lap (in normalized time/progress).")]
     [SerializeField] [Range(-1.0f, 1.0f)] float camToPlayerProgressOffset = 0.0f;
     [Tooltip("In meters per second.")]
     [SerializeField] float pathMoveSpeed = 2.0f;
@@ -109,9 +108,6 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        laps = numLaps;
-        progress = OverallProgress;
-
         UpdatePosition(Time.deltaTime);
         UpdateRotation(Time.deltaTime);
         UpdateDifficulty(Time.deltaTime);

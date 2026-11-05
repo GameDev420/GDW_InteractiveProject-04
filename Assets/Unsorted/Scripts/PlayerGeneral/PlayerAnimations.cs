@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(BlobController))]
 public class PlayerAnimations : MonoBehaviour
@@ -14,6 +15,8 @@ public class PlayerAnimations : MonoBehaviour
     int moveSpeedParameterHash;
     int airborneParameterHash;
 
+    float xMove;
+
     private void Awake()
     {
         blob = GetComponent<BlobController>();
@@ -26,9 +29,14 @@ public class PlayerAnimations : MonoBehaviour
     {
         var posDelta = transform.position - prevPos;
 
-        anim.SetFloat(moveSpeedParameterHash, Mathf.Abs(posDelta.x) / (Time.deltaTime * referenceMaxSpeed));
+        anim.SetFloat(moveSpeedParameterHash, Mathf.Max(Mathf.Abs(posDelta.x / (Time.deltaTime * referenceMaxSpeed)), xMove));
         anim.SetBool(airborneParameterHash, !blob.IsGrounded);
 
         prevPos = transform.position;
+    }
+
+    public void MoveInput(InputAction.CallbackContext context)
+    {
+        xMove = Mathf.Abs(context.ReadValue<Vector2>().x);
     }
 }

@@ -3,6 +3,10 @@ using System.Collections;
 
 public class PlayerVFX : MonoBehaviour
 {
+    [Header("Land VFX")]
+    [SerializeField] GameObject landParticles;
+
+    [Header("Power Up VFX")]
     [SerializeField] Vector3 localVFXPositionOffset = Vector3.zero;
 
     public void SpawnVFX(GameObject prefab, float duration, bool unscaledTime = false)
@@ -19,5 +23,10 @@ public class PlayerVFX : MonoBehaviour
         yield return unscaledTime ? new WaitForSecondsRealtime(duration) : new WaitForSeconds(duration);
 
         Destroy(vfx);
+    }
+
+    public void SpawnLandVFX(bool grounded)
+    {
+        if (grounded) Instantiate(landParticles, transform.position, landParticles.transform.rotation);
     }
 }

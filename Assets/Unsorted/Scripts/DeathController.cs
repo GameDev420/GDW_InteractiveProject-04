@@ -8,6 +8,7 @@ public class DeathController : MonoBehaviour
     [SerializeField] Vector2 deathViewportBounds = new(1.08f, 1.08f);
     [Tooltip("Offset from the player's position to check for death conditions.")]
     [SerializeField] Vector3 localPlayerOffset = new(0.0f, 0.5f, 0.0f);
+    [SerializeField] PlayableSFXObject deathSFX;
     Camera mainCamera;
 
     [Header("Game Over Config")]
@@ -15,6 +16,10 @@ public class DeathController : MonoBehaviour
     [SerializeField] GameOverMenuController gameOverMenu;
     [SerializeField] UnityEvent onGameOver;
     public UnityEvent OnGameOver => onGameOver;
+
+    [Header("Debugging")]
+    [SerializeField] bool debugMode = false;
+    [SerializeField] int numAlivePlayersToWin = 1;
 
     bool isGameOver = false;
     public bool IsGameOver => isGameOver;
@@ -47,7 +52,7 @@ public class DeathController : MonoBehaviour
                 numAlivePlayers++;
         }
 
-        if (!isGameOver && numAlivePlayers <= 1)
+        if (!isGameOver && numAlivePlayers <= (debugMode ? numAlivePlayersToWin : 1))
         {
             if (openMenuOnGameOver && gameOverMenu != null) gameOverMenu.Open();
             if (onGameOver != null) onGameOver.Invoke();
@@ -60,5 +65,7 @@ public class DeathController : MonoBehaviour
     void KillPlayer(PlayerController player)
     {
         player.Kill();
+
+        if (deathSFX != null && deathSFX.SFX != null) deathSFX.SFX.TryPlay(this);
     }
 }

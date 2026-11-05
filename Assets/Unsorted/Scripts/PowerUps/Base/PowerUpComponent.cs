@@ -47,12 +47,18 @@ public class PowerUpComponent : MonoBehaviour
         visuals.SetVisibility(false);
     }
 
+    // Name is misleading - changed this to replenish power up now
     IEnumerator WaitToRemovePowerUp(PlayerController player)
     {
         var args = new PowerUpArgs(player);
 
         yield return new WaitUntil(() => powerUpInstance.CanRemovePowerUp(args));
+        
         powerUpInstance.RemovePowerUp(args);
-        Destroy(gameObject);
+
+        trigger.enabled = true;
+        visuals.SetVisibility(true);
+
+        //Destroy(gameObject);
     }
 }

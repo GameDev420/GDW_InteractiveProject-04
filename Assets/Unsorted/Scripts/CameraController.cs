@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour
     public struct PathPoint
     {
         public bool useRotation;
+        public float speedMultiplier;
         public Transform point;
     }
 
@@ -31,6 +32,9 @@ public class CameraController : MonoBehaviour
     //[Tooltip("Multiplier to determine how much the leading player's position affects the average player position to look toward.")]
     //[SerializeField][Range(1.0f, 10.0f)] float leadingPlayerImportance = 2.0f;
     [SerializeField] bool zRotationLock = true;
+
+    [Header("Difficulty")]
+    [SerializeField] float speedIncreasePerSecond = 0.018f;
 
     [Header("Pathing")]
     [SerializeField] Vector3 worldSpacePlayerOffset = new(0.0f, 5.0f, -10.0f);
@@ -105,6 +109,7 @@ public class CameraController : MonoBehaviour
 
         UpdatePosition(Time.deltaTime);
         UpdateRotation(Time.deltaTime);
+        UpdateDifficulty(Time.deltaTime);
     }
 
     #endregion
@@ -130,7 +135,7 @@ public class CameraController : MonoBehaviour
             OnNewPathPoint(p);
         }
 
-        regularPosition += pathMoveSpeed * deltaTime * (p.point.position - regularPosition).normalized;
+        regularPosition += pathMoveSpeed * p.speedMultiplier * deltaTime * (p.point.position - regularPosition).normalized;
 
         if (allowLeadingPlayerToControlPosition)
         {
@@ -175,6 +180,13 @@ public class CameraController : MonoBehaviour
         transform.rotation = smoothedRotation.SmoothedValue;
 
         if (zRotationLock) transform.rotation = Quaternion.Euler(smoothedRotation.TargetValue.eulerAngles.x, smoothedRotation.TargetValue.eulerAngles.y, 0.0f);
+    }
+
+    void UpdateDifficulty(float deltaTime)
+    {
+        if (!movementEnabled) return;
+
+        pathMoveSpeed += speedIncreasePerSecond * deltaTime;
     }
 
     void OnNewPathPoint(PathPoint point)

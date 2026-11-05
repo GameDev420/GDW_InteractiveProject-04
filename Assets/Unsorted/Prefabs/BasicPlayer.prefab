@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 8397137947565723042}
   - component: {fileID: 9060219589749713853}
   - component: {fileID: -6598217428609146182}
+  - component: {fileID: -3109319007093983589}
   m_Layer: 7
   m_Name: BasicPlayer
   m_TagString: Untagged
@@ -508,3 +509,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72e80e2671759e642ac84d98dd897673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSize
+--- !u!114 &-3109319007093983589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207869201672259332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5656eead7e715aa4a9f33cca896b6ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerProgress

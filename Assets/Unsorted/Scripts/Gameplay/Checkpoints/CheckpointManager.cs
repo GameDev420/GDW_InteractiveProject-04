@@ -5,17 +5,13 @@ public class CheckpointManager : MonoBehaviour
 {
     public static CheckpointManager Instance;
 
-    [Tooltip("The index of the first checkpoint at the half-way point, at the top-right of the level.")]
-    [SerializeField] int upperHalfIndex; // really bad solution but I'm rushing a bit
     [SerializeField] Rigidbody[] checkpoints = new Rigidbody[0];
-
     readonly List<PlayerProgress> progression = new();
 
     private void Awake()
     {
         Instance = this;
     }
-
     private void OnEnable()
     {
         PlayerManager.PlayerJoined += OnPlayerJoined;
@@ -55,12 +51,14 @@ public class CheckpointManager : MonoBehaviour
     }
     public Transform GetCheckpointFromIndex(uint index) => checkpoints[index % checkpoints.Length].transform;
 
-    public PlayerController GetLeadingPlayer()
+    public PlayerProgress GetLeadingPlayer()
     {
+        if (progression.Count == 0) return null;
+
         var highestLap = -1;
         uint highestCheckpoint = 0;
         var highestProgress = -1.0f;
-        PlayerController leadingPlayer = null;
+        PlayerProgress leadingPlayer = null;
 
         for (int i = 0; i < progression.Count; i++)
         {
@@ -73,10 +71,17 @@ public class CheckpointManager : MonoBehaviour
                 highestLap = p.LapsCompleted;
                 highestCheckpoint = p.CheckpointIndex;
                 highestProgress = progress;
-                leadingPlayer = PlayerManager.Players[i];
+                leadingPlayer = p;
             }
         }
 
         return leadingPlayer;
     }
+
+    public float GetLapProgress(PlayerProgress player)
+    {
+        var step = 1.0f / checkpoints.Length;
+        return Mathf.Clamp01(player.CheckpointIndex * step + player.Progress * step);
+    }
+    public float GetOverallProgress(PlayerProgress player) => player.LapsCompleted + GetLapProgress(player);
 }

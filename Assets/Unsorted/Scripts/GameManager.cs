@@ -50,7 +50,6 @@ public class GameManager : MonoBehaviour
     void EndGame()
     {
         var winner = PlayerManager.Players.Find((p) => !p.IsDead);
-        Debug.Log("Winner is: " + winner.name + ", who is dead = " + winner.IsDead, winner);
 
         if (winner != null) gameOverMenu.Init(new((PlayerManager.Players.IndexOf(winner) + 1).ToString()));
         else Debug.LogWarning("Winner could not be found. Game Over screen results will be incorrect.", this);

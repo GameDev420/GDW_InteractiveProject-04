@@ -733,7 +733,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78d766177f42d2f488c44c507c7fa501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerManager
-  players: []
   spawnPoints:
   - {fileID: 659386422}
   - {fileID: 1671509349}
@@ -838,7 +837,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea09c90e7fbf7e4991b40684a2f5ca9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CheckpointManager
-  upperHalfIndex: 0
   checkpoints:
   - {fileID: 4898013614791237293}
   - {fileID: 2106023107}

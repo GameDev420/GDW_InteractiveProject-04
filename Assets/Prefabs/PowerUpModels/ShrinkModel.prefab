@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 453549756112821155}
   - component: {fileID: 7149943964992206845}
   m_Layer: 0
-  m_Name: GrowModel
+  m_Name: ShrinkModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,15 +58,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalScale.x
-      value: 25
+      value: 37.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalScale.y
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 37.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -86,11 +86,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalRotation.z
@@ -98,7 +98,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -110,12 +110,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: e6eccf25a5dcc584aa109adcb872ff5c, type: 2}
+      objectReference: {fileID: 2100000, guid: 3bc4fcb437b26a940a4e8d0db092b363, type: 2}
     - target: {fileID: 919132149155446097, guid: 6b2189a5067d4d548abe30bb693ab6cf, type: 3}
       propertyPath: m_Name
       value: BetterArrow

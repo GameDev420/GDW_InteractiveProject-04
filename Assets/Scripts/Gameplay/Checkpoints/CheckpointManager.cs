@@ -116,8 +116,6 @@ public class CheckpointManager : MonoBehaviour
             bool furtheralong = samelap && p.CheckpointIndex == highestCheckpoint && progress > highestProgress;
 
             if (morelaps || laterpoint || furtheralong)
-
-                if (p.LapsCompleted > highestLap || (p.LapsCompleted == highestLap && p.CheckpointIndex >= highestCheckpoint && progress > highestProgress))
             {
                 highestLap = p.LapsCompleted;
                 highestCheckpoint = p.CheckpointIndex;

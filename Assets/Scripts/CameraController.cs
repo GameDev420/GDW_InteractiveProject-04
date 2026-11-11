@@ -36,6 +36,16 @@ public class CameraController : MonoBehaviour
     [Header("Difficulty")]
     [SerializeField] float speedIncreasePerSecond = 0.018f;
 
+    [SerializeField] bool useracespeed = true;
+
+    //zoom out to put everyone 
+    [SerializeField] float maxzoomout = 14f; 
+    [SerializeField] float zoompadding = 2f; 
+    [SerializeField] float zoomspeed = 3f;
+
+    Camera cam;
+    float zoomextra;
+
     [Header("Pathing")]
     [SerializeField] Vector3 worldSpacePlayerOffset = new(0.0f, 5.0f, -10.0f);
     [SerializeField] PathPoint[] path = new PathPoint[0];
@@ -138,7 +148,10 @@ public class CameraController : MonoBehaviour
             OnNewPathPoint(p);
         }
 
-        uninfluencedPosition += pathMoveSpeed * p.speedMultiplier * deltaTime * (p.point.position - uninfluencedPosition).normalized;
+        float race = 1f;
+        if (useracespeed) race = CheckpointManager.Current(1f);
+
+        uninfluencedPosition += pathMoveSpeed * race * p.speedMultiplier * deltaTime * (p.point.position - uninfluencedPosition).normalized;
 
         // HOLY INEFFICIENCY BTW IM SO SORRY (this whole section, esp. running each frame)
         // Calculate leading player
@@ -176,6 +189,47 @@ public class CameraController : MonoBehaviour
 
         smoothedPosition.Smooth(deltaTime);
         transform.position = smoothedPosition.SmoothedValue;
+
+        transform.position -= transform.forward * ZoomOut(deltaTime);
+
+    }
+
+    float ZoomOut(float deltaTime)
+    {
+        if (cam == null) cam = GetComponent<Camera>();
+        if (cam == null) return 0f;
+
+        // how much the camera sees per unit of distance, minus whatever the closing walls cover
+        float tanup = Mathf.Tan(cam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        float tanside = tanup * cam.aspect;
+        if (ClosingWalls.Instance != null)
+        {
+            tanside *= 1f - 2f * ClosingWalls.Instance.SideCover;
+            tanup *= 1f - 2f * ClosingWalls.Instance.TopBottomCover;
+        }
+
+        // for each living player, how far back the camera would need to be to fit them on screen
+        float wanted = 0f;
+        for (int i = 0; i < PlayerManager.Players.Count; i++)
+        {
+            PlayerController player = PlayerManager.Players[i];
+            if (player == null || player.IsDead) continue;
+
+            Vector3 fromcamera = player.transform.position + Vector3.up - transform.position;
+            float ahead = Vector3.Dot(fromcamera, transform.forward); // how far in front of the camera
+            float sideways = Mathf.Abs(Vector3.Dot(fromcamera, transform.right)) + zoompadding;
+            float upways = Mathf.Abs(Vector3.Dot(fromcamera, transform.up)) + zoompadding;
+
+            float neededforside = sideways / tanside - ahead;
+            float neededforup = upways / tanup - ahead;
+            wanted = Mathf.Max(wanted, neededforside, neededforup);
+        }
+
+        // the cap: past this, players too far away go off screen and DeathController knocks them out
+        wanted = Mathf.Clamp(wanted, 0f, maxzoomout);
+
+        zoomextra = Mathf.Lerp(zoomextra, wanted, 1f - Mathf.Exp(-zoomspeed * deltaTime));
+        return zoomextra;
     }
 
     void UpdateRotation(float deltaTime)
@@ -213,6 +267,8 @@ public class CameraController : MonoBehaviour
     void UpdateDifficulty(float deltaTime)
     {
         if (!movementEnabled) return;
+
+        if (useracespeed) return;
 
         pathMoveSpeed += speedIncreasePerSecond * deltaTime;
     }

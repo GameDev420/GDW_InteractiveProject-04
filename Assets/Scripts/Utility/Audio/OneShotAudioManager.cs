@@ -92,6 +92,11 @@ public static class OneShotAudioManager
             return null;
         }
 
+        // scenes like TestLevel1 never set up the pool,
+        // and stop the crash from jump 
+        if (sourcePool == null) return null;
+
+
         var obj = sourcePool.GetObject();
 
         obj.clip = clip;

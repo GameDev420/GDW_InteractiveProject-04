@@ -28,11 +28,13 @@ public class PreGameBarrier : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnGameStart += OnGameStart;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStart += OnGameStart;
     }
     private void OnDisable()
     {
-        GameManager.Instance.OnGameStart -= OnGameStart;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStart -= OnGameStart;
     }
 
     void OnGameStart()

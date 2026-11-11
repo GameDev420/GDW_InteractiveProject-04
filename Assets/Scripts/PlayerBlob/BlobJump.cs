@@ -10,7 +10,7 @@ public partial class BlobController
     public float latejumptime = 0.1f; 
     public float earlyjumptime = 0.1f;
 
-    public PlayableSFXObject jumpSFX; // SFX stuff - can be replaced later
+    public PlayableSFXObject jumpSFX; 
 
     bool canshortenjump;
     float latejumptimer;
@@ -41,8 +41,6 @@ public partial class BlobController
         if (IsGrounded && jumpSFX != null && jumpSFX.SFX != null) jumpSFX.SFX.TryPlay(this);
 
         if (latejumptimer > 0f && earlyjumptimer > 0f)
-
-            if (latejumptimer > 0f)
         {
             velocity.y = jumpspeed;
             UseUpJump();
@@ -51,6 +49,7 @@ public partial class BlobController
         {
             WallJump();
             UseUpJump();
+
             canshortenjump = walljumpshorthop;
         }
     }

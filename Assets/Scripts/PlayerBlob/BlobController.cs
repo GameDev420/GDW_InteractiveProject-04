@@ -9,7 +9,7 @@ public partial class BlobController : MonoBehaviour
 
     public Transform model;
 
-    // degrees per second 1800 spins all the way round in 0.1 seconds
+    // degrees per second 1800 spins all the way round in .1 seconds
     public float turnspeed = 1800f; 
     public bool modelfacesright = true;
 
@@ -164,7 +164,6 @@ public partial class BlobController : MonoBehaviour
             if (walking != null) walking.enabled = false;
             return;
         }
-
         if (walking != null) walking.enabled = CanSteer() && !IsSwinging();
     }
 

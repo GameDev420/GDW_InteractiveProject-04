@@ -14,13 +14,23 @@ public class PlayerProgress : MonoBehaviour
     private void Start()
     {
         lapsCompleted = -1;
+
+        if (CheckpointManager.Instance == null || CheckpointManager.Instance.NumCheckpoints == 0) return;
+
         NextCheckpoint(0);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        // before touching the start checkpoint always added a lap, so walking back and forth
+        // over the start line could speed the whole race W
+        if (CheckpointManager.Instance == null || CheckpointManager.Instance.NumCheckpoints == 0) return;
+
         if (other.attachedRigidbody != null && CheckpointManager.Instance.TryGetCheckpointIndex(other.attachedRigidbody, out var index))
-            NextCheckpoint(index);
+        {
+            uint nextindex = (checkpointIndex + 1) % (uint)CheckpointManager.Instance.NumCheckpoints;
+            if (index == nextindex) NextCheckpoint(index);
+        }
     }
 
     void NextCheckpoint(uint currentIndex)

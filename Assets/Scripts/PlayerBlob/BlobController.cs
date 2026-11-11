@@ -4,7 +4,17 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController), typeof(PlayerController), typeof(GrappleHook))]
 public partial class BlobController : MonoBehaviour
 {
-    public float sideslowdown; 
+    public float sideslowdown;
+
+
+    public Transform model;
+
+    // degrees per second 1800 spins all the way round in 0.1 seconds
+    public float turnspeed = 1800f; 
+    public bool modelfacesright = true;
+
+    // the models rotation when facing right
+    Quaternion facingright; 
 
     CharacterController controller;
     PlayerController player;
@@ -28,6 +38,12 @@ public partial class BlobController : MonoBehaviour
         hook = GetComponent<GrappleHook>();
         walking = GetComponent<TempMovement>();
         solidlayers = Physics.DefaultRaycastLayers & ~LayerMask.GetMask("Player");
+
+        if (model != null)
+        {
+            facingright = model.localRotation;
+            if (!modelfacesright) facingright = Quaternion.Euler(0f, 180f, 0f) * facingright;
+        }
     }
 
     // remembers where we are so the first move starts from the right spot
@@ -52,6 +68,7 @@ public partial class BlobController : MonoBehaviour
     
     public void Tick(BlobButtons buttons, float seconds)
     {
+        ReturnWalkControl(seconds);
         CountDownTimers(buttons, seconds);
         CheckGround();
         CheckWalls();
@@ -61,13 +78,29 @@ public partial class BlobController : MonoBehaviour
         if (IsSwinging()) PushAlongSwing(seconds);
         else if (CanSteer()) FadeSideSpeed(seconds);
 
+
+        SlideDownWall(seconds);
         Jump();
         ShortenJump(buttons.jumpheld);
         ApplyGravity(seconds);
-        SlideDownWall();
         StayOnGround();
         MoveBlob(seconds);
         LetWalkingRun();
+
+        TurnModel(seconds);
+
+    }
+
+
+    void TurnModel(float seconds)
+    {
+        if (model == null) return;
+
+        Quaternion wanted = facingright;
+        if (facing < 0) wanted = Quaternion.Euler(0f, 180f, 0f) * facingright;
+
+        // turn a little each frame, so it spins instead of snapping
+        model.localRotation = Quaternion.RotateTowards(model.localRotation, wanted, turnspeed * seconds);
     }
 
     // puts the player somewhere new and clears their speed
@@ -81,6 +114,9 @@ public partial class BlobController : MonoBehaviour
         lastposition = position;
         velocity = Vector3.zero;
         hook.Cancel();
+
+        walkcontrol = 1f;
+        walljumppush = false;
     }
 
     // runs down the jump timers, a jump press starts the early jump timer
@@ -90,8 +126,11 @@ public partial class BlobController : MonoBehaviour
         walljumptimer -= seconds;
         nosteertimer -= seconds;
         earlyjumptimer -= seconds;
+        walljumppresstimer -= seconds;
 
         if (buttons.jumppressed) earlyjumptimer = earlyjumptime;
+
+        if (buttons.jumppressed) walljumppresstimer = walljumppresswindow;
     }
 
     // remembers which way the player is facing, the hook fires that way
@@ -101,16 +140,31 @@ public partial class BlobController : MonoBehaviour
 
         if (movex > 0f) facing = 1;
         if (movex < 0f) facing = -1;
+
+        if (alwaysrun) PickRunDirection(movex);
     }
 
     // slows down side speed left over from swings and wall jumps
     void FadeSideSpeed(float seconds)
     {
-        velocity.x = Mathf.MoveTowards(velocity.x, 0f, sideslowdown * seconds);
+        float fade = sideslowdown;
+
+        if (walljumppush && IsGrounded) fade = walljumpfade;
+
+        velocity.x = Mathf.MoveTowards(velocity.x, 0f, fade * seconds);
+
+        if (velocity.x == 0f) walljumppush = false;
+       
     }
 
     void LetWalkingRun()
     {
+        if (alwaysrun)
+        {
+            if (walking != null) walking.enabled = false;
+            return;
+        }
+
         if (walking != null) walking.enabled = CanSteer() && !IsSwinging();
     }
 

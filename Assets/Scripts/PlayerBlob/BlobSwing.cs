@@ -6,13 +6,16 @@ public partial class BlobController
     public float maxswingspeed;
     public float swingreleaseboost;
 
-    // true when hanging from the hook in the air
+    public float grapplehop = 6f;
+
+    public float swingfloorgap = 0.5f;
+
     bool IsSwinging()
     {
         return hook.IsAttached && !IsGrounded;
     }
 
-    // runs the hook and letting go mid swing gives a speed boost
+
     void UseHook(BlobButtons buttons, float seconds)
     {
         bool washooked = hook.IsAttached;
@@ -20,6 +23,19 @@ public partial class BlobController
 
         bool letgo = washooked && !hook.IsAttached;
         if (letgo && !IsGrounded) velocity *= swingreleaseboost;
+
+        bool justcaught = !washooked && hook.IsAttached;
+        if (justcaught && IsGrounded && grapplehop > 0f)
+        {
+            velocity.y = grapplehop;
+
+            // the rope was as long as the gap from the floor to the hook, so the bottom of
+            // the swing went into the floor and stopped you. reel it in so the bottom of
+            // the swing passes swingfloorgap above where you're standing
+            float heightbelowhook = hook.Tip.y - Middle().y;
+            float safelength = heightbelowhook - swingfloorgap;
+            hook.ReelInTo(Mathf.Max(safelength, 1f));
+        }
     }
 
     void PushAlongSwing(float seconds)
@@ -27,7 +43,7 @@ public partial class BlobController
         Vector3 tohook = (hook.Tip - Middle()).normalized;
         Vector3 alongswing = new Vector3(tohook.y, -tohook.x, 0f); // sideways to the rope
 
-        velocity += alongswing * (facing * swingdrive * seconds);
+        velocity += alongswing * (facing * swingdrive * RaceSpeedNow() * seconds);
     }
 
     Vector3 KeepOnRope(Vector3 target)
@@ -39,7 +55,7 @@ public partial class BlobController
         float speedaway = Vector3.Dot(velocity, awayfromhook);
         if (speedaway > 0f) velocity -= awayfromhook * speedaway;
 
-        velocity = Vector3.ClampMagnitude(velocity, maxswingspeed);
+        velocity = Vector3.ClampMagnitude(velocity, maxswingspeed * RaceSpeedNow());
         return hook.Tip + awayfromhook * hook.RopeLength - controller.center;
     }
 }

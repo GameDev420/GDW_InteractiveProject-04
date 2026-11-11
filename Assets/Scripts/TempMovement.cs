@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TempMovement : MonoBehaviour
 {
@@ -54,4 +56,26 @@ public class TempMovement : MonoBehaviour
     {
         speedMultipliers.Add(new(multiplier, Time.time + duration));
     }
+
+    #region lets BlobController use speed boosts while this script is switched off
+    // same averaging as Update above, and it clears out boosts that have run out
+    public float SpeedMultiplierNow()
+    {
+        float total = 0f;
+        int count = 0;
+
+        for (int i = speedMultipliers.Count - 1; i >= 0; i--)
+        {
+            if (speedMultipliers[i].EndTime <= Time.time) speedMultipliers.RemoveAt(i);
+            else
+            {
+                total += speedMultipliers[i].Multiplier;
+                count++;
+            }
+        }
+
+        if (count == 0) return 1f;
+        return total / count;
+    }
+    #endregion
 }

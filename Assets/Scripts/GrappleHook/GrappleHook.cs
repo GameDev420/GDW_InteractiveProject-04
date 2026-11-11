@@ -12,6 +12,15 @@ public class GrappleHook : MonoBehaviour
 
     public PlayableSFXObject grappleSFX;
 
+    public float reelspeed = 10f;
+
+    float wantedropelength;
+
+    public void ReelInTo(float length)
+    {
+        wantedropelength = Mathf.Min(length, RopeLength);
+    }
+
     public HookState State { get; private set; }
     public Vector3 Tip { get; private set; }
     public float RopeLength { get; private set; }
@@ -38,6 +47,11 @@ public class GrappleHook : MonoBehaviour
 
         if (!held) State = HookState.Idle;
         else if (State == HookState.Flying) Fly(seconds);
+
+        if (State == HookState.Attached)
+        {
+            RopeLength = Mathf.MoveTowards(RopeLength, wantedropelength, reelspeed * seconds);
+        }
 
         DrawLine();
     }
@@ -82,6 +96,8 @@ public class GrappleHook : MonoBehaviour
 
         Tip = hit.point;
         RopeLength = Vector3.Distance(Middle(), hit.point);
+
+        wantedropelength = RopeLength;
         State = hitstrip ? HookState.Attached : HookState.Idle;
     }
 

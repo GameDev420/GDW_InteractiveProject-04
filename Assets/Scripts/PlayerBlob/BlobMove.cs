@@ -2,10 +2,45 @@ using UnityEngine;
 
 public partial class BlobController
 {
+
+    public float basetopspeed = 8f; 
+    public float overspeedslowdown = 20f; 
+    public float testracespeed = 1f; 
+
+
+    float RaceSpeedNow()
+    {
+        return CheckpointManager.Current(testracespeed);
+    }
+
     // does the real move for the frame, and stops at ceilings and walls
     void MoveBlob(float seconds)
     {
-        Vector3 walked = transform.position - lastposition;
+        Vector3 walked = (transform.position - lastposition) * walkcontrol;
+
+        float race = RaceSpeedNow();
+        walked *= race;
+
+        if (alwaysrun && !IsSwinging())
+        {
+            walked += RunStep(seconds, race);
+        }
+
+
+        if (!hook.IsAttached && !walljumppush && seconds > 0f)
+        {
+            float topspeed = basetopspeed * race;
+            float walkspeed = walked.x / seconds;
+            float total = walkspeed + velocity.x;
+
+            if (Mathf.Abs(total) > topspeed)
+            {
+                float allowed = Mathf.Sign(total) * topspeed - walkspeed;
+                velocity.x = Mathf.MoveTowards(velocity.x, allowed, overspeedslowdown * race * seconds);
+            }
+        }
+
+
         transform.position = lastposition;
         Physics.SyncTransforms();
 

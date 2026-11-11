@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: -3109319007093983589}
   - component: {fileID: 7252670682649095212}
   - component: {fileID: 49155922864887035}
+  - component: {fileID: 6716766980978035846}
   m_Layer: 7
   m_Name: BasicPlayer
   m_TagString: Untagged
@@ -293,7 +294,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11644ece4abe64b4faf32a3910c4997a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  movementComponent: {fileID: 8890806333115746557}
   visuals: {fileID: 6838745488915392486}
 --- !u!114 &152906208580429237
 MonoBehaviour:
@@ -460,6 +460,7 @@ MonoBehaviour:
   hookspeed: 70
   maxrange: 22
   grappleSFX: {fileID: 11400000, guid: 49b23e049d3ae73409c4dee41c0f515d, type: 2}
+  reelspeed: 10
 --- !u!114 &8397137947565723042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +474,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlobController
   sideslowdown: 4
+  model: {fileID: 0}
+  turnspeed: 1800
+  modelfacesright: 1
   jumpspeed: 14.000001
   gravity: 38
   fallgravitymultiplier: 1.3
@@ -481,12 +485,28 @@ MonoBehaviour:
   latejumptime: 0.1
   earlyjumptime: 0.1
   jumpSFX: {fileID: 11400000, guid: 7db1489f491912c42bd719976638d0b0, type: 2}
+  basetopspeed: 8
+  overspeedslowdown: 20
+  testracespeed: 1
+  alwaysrun: 1
+  runspeed: 5
+  startdirection: 1
   swingdrive: 20
   maxswingspeed: 15
   swingreleaseboost: 1.1
+  grapplehop: 6
+  swingfloorgap: 0.5
   walljumpsidespeed: 10
   wallslidespeed: 4
   nosteertime: 0.14
+  walljumpupspeed: 12
+  walljumpforgiveness: 0.15
+  walljumpfade: 20
+  controlreturntime: 0.25
+  walljumpshorthop: 0
+  walljumppresswindow: 0.2
+  wallgriptime: 0.4
+  wallslidegain: 8
 --- !u!114 &9060219589749713853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +588,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &6716766980978035846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207869201672259332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11644ece4abe64b4faf32a3910c4997a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  visuals: {fileID: 6838745488915392486}
 --- !u!1001 &5920389732542864055
 PrefabInstance:
   m_ObjectHideFlags: 0

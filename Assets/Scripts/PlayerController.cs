@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour
     InputAction jump;
     InputAction grapple;
 
+    BlobController blob;
+    TempMovement walking;
+    CharacterController body;
+
 
     // Getters
     public bool IsDead => isDead;
@@ -38,6 +42,9 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
+        blob = GetComponent<BlobController>();
+        walking = GetComponent<TempMovement>();
+        body = GetComponent<CharacterController>();
     }
 
         void Start()
@@ -70,13 +77,39 @@ public class PlayerController : MonoBehaviour
 
         visuals.SetActive(false);
 
+        if (blob != null)
+        {
+            blob.enabled = false;
+        }
+
+        if (walking != null)
+        {
+            walking.enabled = false;
+        }
+
+        if (body != null)
+        {
+            body.enabled = false;
+        }
+
         isDead = true;
     }
 
     public void Respawn()
     {
         visuals.SetActive(true);
-        isDead = false;
+
+        if (body != null)
+        {
+            body.enabled = true;
+        }
+        if (blob != null)
+        {
+            // BlobController decides if TempMovement should run
+            blob.enabled = true;
+        }
+
+            isDead = false;
     }
 
     /// <summary>

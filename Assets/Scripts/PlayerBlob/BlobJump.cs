@@ -35,12 +35,14 @@ public partial class BlobController
 
     void Jump()
     {
-        if (earlyjumptimer <= 0f)
+        if (earlyjumptimer <= 0f && walljumppresstimer <= 0f)
             return;
 
         if (IsGrounded && jumpSFX != null && jumpSFX.SFX != null) jumpSFX.SFX.TryPlay(this);
 
-        if (latejumptimer > 0f)
+        if (latejumptimer > 0f && earlyjumptimer > 0f)
+
+            if (latejumptimer > 0f)
         {
             velocity.y = jumpspeed;
             UseUpJump();
@@ -49,6 +51,7 @@ public partial class BlobController
         {
             WallJump();
             UseUpJump();
+            canshortenjump = walljumpshorthop;
         }
     }
 
@@ -58,6 +61,7 @@ public partial class BlobController
         earlyjumptimer = 0f;
         latejumptimer = 0f;
         walljumptimer = 0f;
+        walljumppresstimer = 0f;
     }
 
     void ShortenJump(bool jumpheld)

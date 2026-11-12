@@ -458,7 +458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GrappleHook
   fireangle: 60
   hookspeed: 70
-  maxrange: 22
+  maxrange: 100
   grappleSFX: {fileID: 11400000, guid: 49b23e049d3ae73409c4dee41c0f515d, type: 2}
   reelspeed: 10
 --- !u!114 &8397137947565723042
@@ -474,7 +474,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlobController
   sideslowdown: 4
-  model: {fileID: 0}
+  model: {fileID: 1432460878200485868}
   turnspeed: 1800
   modelfacesright: 1
   jumpspeed: 14.000001

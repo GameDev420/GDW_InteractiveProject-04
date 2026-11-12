@@ -11,6 +11,8 @@ public class PowerUpComponent : MonoBehaviour
     [SerializeField] LayerMask playerLayer;
     PowerUpInstance powerUpInstance;
 
+    [SerializeField] float respawntime = 10f;
+
     private void Awake()
     {
         powerUpInstance = powerUpData.CreatePowerUpInstance();
@@ -34,31 +36,40 @@ public class PowerUpComponent : MonoBehaviour
         {
             var player = other.GetComponentInParent<PlayerController>();
 
+            if (player != null && !powerUpInstance.CanPickup(new PowerUpArgs(player))) return;
+
             if (player != null) Pickup(player);
         }
     }
 
     void Pickup(PlayerController player)
     {
-        powerUpInstance.Pickup(new PowerUpArgs(player));
-        StartCoroutine(WaitToRemovePowerUp(player));
+        
+        PowerUpInstance instance = powerUpData.CreatePowerUpInstance();
+        instance.Pickup(new PowerUpArgs(player));
+
+        StartCoroutine(WaitToRemovePowerUp(instance, player));
+        StartCoroutine(WaitToRespawn());
 
         trigger.enabled = false;
         visuals.SetVisibility(false);
     }
 
     // Name is misleading - changed this to replenish power up now
-    IEnumerator WaitToRemovePowerUp(PlayerController player)
+    IEnumerator WaitToRemovePowerUp(PowerUpInstance instance, PlayerController player)
     {
         var args = new PowerUpArgs(player);
 
-        yield return new WaitUntil(() => powerUpInstance.CanRemovePowerUp(args));
-        
-        powerUpInstance.RemovePowerUp(args);
+        yield return new WaitUntil(() => instance.CanRemovePowerUp(args));
+
+        instance.RemovePowerUp(args);
+    }
+
+    IEnumerator WaitToRespawn()
+    {
+        yield return new WaitForSeconds(respawntime);
 
         trigger.enabled = true;
         visuals.SetVisibility(true);
-
-        //Destroy(gameObject);
     }
 }

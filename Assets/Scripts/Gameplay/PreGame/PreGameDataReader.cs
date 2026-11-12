@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PreGameDataReader : MonoBehaviour
 {
-    // False in game players wanna play again (with same player configuration)
+    // False in case players wanna play again (with same player configuration)
     [SerializeField] bool resetOnDisable = false;
     [SerializeField] PreGameData preGameData;
     [SerializeField] PlayerInputManager inputManager;

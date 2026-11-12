@@ -795,7 +795,7 @@ MonoBehaviour:
   onGameStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 483367622}
+      - m_Target: {fileID: 1389181294}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -7807,7 +7807,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3737654604536495701, guid: 02bb6e4d0933aac409732d5dc8126d82, type: 3}
   m_PrefabInstance: {fileID: 735686203}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1389181294}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -10028,8 +10028,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 606.73914, y: -427.90564}
-  m_SizeDelta: {x: 706.5139, y: 224.1965}
+  m_AnchoredPosition: {x: 660.2705, y: -444.89264}
+  m_SizeDelta: {x: 599.4512, y: 190.2225}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1123506622
 MonoBehaviour:
@@ -11220,6 +11220,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1379486466}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1389181294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1825394484220454681, guid: 02bb6e4d0933aac409732d5dc8126d82, type: 3}
+  m_PrefabInstance: {fileID: 735686203}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1395802749
 GameObject:
   m_ObjectHideFlags: 0
@@ -13534,8 +13539,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 80.588}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -178.7, y: 59}
-  m_SizeDelta: {x: 2, y: 140}
+  m_AnchoredPosition: {x: -141.1309, y: 47.185535}
+  m_SizeDelta: {x: 2.5263, y: 135.9889}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2022286164
 MonoBehaviour:

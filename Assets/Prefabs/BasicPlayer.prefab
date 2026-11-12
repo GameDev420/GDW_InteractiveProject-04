@@ -135,7 +135,8 @@ GameObject:
   - component: {fileID: -3109319007093983589}
   - component: {fileID: 7252670682649095212}
   - component: {fileID: 49155922864887035}
-  - component: {fileID: 6716766980978035846}
+  - component: {fileID: 4148012118793685241}
+  - component: {fileID: 4444949531962644276}
   m_Layer: 7
   m_Name: BasicPlayer
   m_TagString: Untagged
@@ -278,6 +279,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 0ccba712-d247-46ba-9115-307635930b25
     m_ActionName: 'Player/Grapple[/Keyboard/j]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7cc286f0-6c3e-4aaa-8fec-1445b6f780c1
+    m_ActionName: 'Player/StartGame[/Keyboard/enter,/DualShock4GamepadHID/start]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -478,6 +483,11 @@ MonoBehaviour:
   model: {fileID: 1432460878200485868}
   turnspeed: 1800
   modelfacesright: 1
+  headJumpForce: 10
+  headPushDownForce: 5
+  playerHeadLayer:
+    serializedVersion: 2
+    m_Bits: 256
   jumpspeed: 14.000001
   gravity: 38
   fallgravitymultiplier: 1.3
@@ -592,7 +602,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6716766980978035846
+--- !u!114 &4148012118793685241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -601,10 +611,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 5207869201672259332}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11644ece4abe64b4faf32a3910c4997a, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ccb2246a16e7a149af06af6554502cd, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  visuals: {fileID: 6838745488915392486}
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSFX
+  distancePerStep: 2.7
+  runningSFX: {fileID: 11400000, guid: dece10c1e6a73814e96323ef34713569, type: 2}
+  controller: {fileID: 7238995962622584994}
+--- !u!114 &4444949531962644276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5207869201672259332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4da5d3a491b834881bc9bd49bed7f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterControllerHitEventReceiver
+  onControllerColliderHitReceived:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7345163092298757157
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,7 +700,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

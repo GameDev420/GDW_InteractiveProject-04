@@ -15,7 +15,7 @@ MonoBehaviour:
   SFX:
     MinimumTimeBetweenPlays: 0.05
     Clips:
-    - BaseVolume: 1
+    - BaseVolume: 0.3
       BasePitch: 1
       SFX: {fileID: 8300000, guid: f9c523605e47eb64cb839aa158ff44b3, type: 3}
     GroupInfo: {fileID: 11400000, guid: b7bd06e4d5121c046a7f191e6db3f22d, type: 2}

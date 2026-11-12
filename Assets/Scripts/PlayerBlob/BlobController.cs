@@ -65,7 +65,12 @@ public partial class BlobController : MonoBehaviour
         Tick(player.ReadButtons(), Time.deltaTime);
     }
 
-    
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        
+    }
+
+
     public void Tick(BlobButtons buttons, float seconds)
     {
         ReturnWalkControl(seconds);

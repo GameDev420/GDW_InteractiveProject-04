@@ -106,6 +106,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
+  respawntime: 7.5
 --- !u!54 &553869785095036087
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -177,6 +178,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ba83aaa21b712e409670dcfcc41b60d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerUpVisual
-  verticalMoveSpeed: 2
-  verticalMoveHeight: 0.7
-  localAngularSpeed: {x: 30, y: 45, z: 0}
+  baseLocalOffset: {x: 0, y: 1.25, z: 0}

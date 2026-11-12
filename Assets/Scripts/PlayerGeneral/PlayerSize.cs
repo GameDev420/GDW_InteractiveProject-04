@@ -3,6 +3,7 @@ using UnityEngine.Events;
 
 public class PlayerSize : MonoBehaviour
 {
+    [SerializeField] TempMovement walking;
     Vector3 initScale;
     float sizeMultiplier = 1.0f;
     [SerializeField] UnityEvent<float> onSizeChanged;
@@ -15,11 +16,15 @@ public class PlayerSize : MonoBehaviour
         initScale = transform.localScale;
     }
 
-    public void SetSizeMultiplier(float multiplier)
+    // TODO: create similar system to TempMovement's SetSpeedMultiplier, but for size (or make it reusable)
+    // ^ I can do this if you want, just remind me later
+    public void SetSizeMultiplier(float multiplier, float duration) // 'duration' only used for movement speed multiplier
     {
         sizeMultiplier = multiplier;
 
         transform.localScale = initScale * multiplier;
         if (onSizeChanged != null) onSizeChanged.Invoke(multiplier);
+
+        if (walking != null) walking.SetSpeedMultiplier(multiplier, duration);
     }
 }

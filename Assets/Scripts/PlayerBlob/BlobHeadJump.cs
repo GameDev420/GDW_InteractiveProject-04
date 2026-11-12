@@ -47,6 +47,10 @@ public partial class BlobController
 
     public void OnFeetTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Head") && Velocity.y < 0.0f) velocity.y = headJumpForce;
+        if (other.CompareTag("Head") && Velocity.y < 0.0f)
+        {
+            velocity.y = headJumpForce;
+            if (jumpSFX != null && jumpSFX.SFX != null) jumpSFX.SFX.TryPlay(this);
+        }
     }
 }

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class TempMovement : MonoBehaviour
 {
@@ -51,7 +49,6 @@ public class TempMovement : MonoBehaviour
         transform.Translate(movement);
     }
 
-    // Temporary solution as the project's due soon
     public void SetSpeedMultiplier(float multiplier, float duration)
     {
         speedMultipliers.Add(new(multiplier, Time.time + duration));

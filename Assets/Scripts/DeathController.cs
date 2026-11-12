@@ -17,9 +17,7 @@ public class DeathController : MonoBehaviour
     [SerializeField] UnityEvent onGameOver;
     public UnityEvent OnGameOver => onGameOver;
 
-    [Header("Debugging")]
-    [SerializeField] bool debugMode = false;
-    [SerializeField] int numAlivePlayersToWin = 1;
+    int numAlivePlayersToWin = 1;
 
     bool isGameOver = false;
     public bool IsGameOver => isGameOver;
@@ -27,6 +25,15 @@ public class DeathController : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main != null ? Camera.main : FindAnyObjectByType<Camera>();
+    }
+
+    private void OnEnable()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.OnGameStart += OnGameStart;
+    }
+    private void OnDisable()
+    {
+        if (GameManager.Instance != null) GameManager.Instance.OnGameStart -= OnGameStart;
     }
 
     private void Update()
@@ -52,7 +59,7 @@ public class DeathController : MonoBehaviour
                 numAlivePlayers++;
         }
 
-        if (!isGameOver && numAlivePlayers <= (debugMode ? numAlivePlayersToWin : 1))
+        if (!isGameOver && numAlivePlayers <= numAlivePlayersToWin)
         {
             if (openMenuOnGameOver && gameOverMenu != null) gameOverMenu.Open();
             if (onGameOver != null) onGameOver.Invoke();
@@ -67,5 +74,11 @@ public class DeathController : MonoBehaviour
         player.Kill();
 
         if (deathSFX != null && deathSFX.SFX != null) deathSFX.SFX.TryPlay(this);
+    }
+
+    void OnGameStart()
+    {
+        // One player requires zero alive players to win, two or more players require one alive.
+        if (GameManager.Instance != null) numAlivePlayersToWin = PlayerManager.Players.Count == 1 ? 0 : 1;
     }
 }

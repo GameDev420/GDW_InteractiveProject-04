@@ -21,16 +21,11 @@ public class CameraController : MonoBehaviour
 
     [Header("Config")]
     [SerializeField] bool allowLeadingPlayerToControlPosition = false;
-    [SerializeField] [Min(0.0f)] float leadingPlayerWeightMultiplier = 2.0f;
     [Tooltip("Adjust this to change how far/behind the camera must be from player progress in the current lap (in normalized time/progress).")]
     [SerializeField] [Range(-1.0f, 1.0f)] float camToPlayerProgressOffset = 0.0f;
     [Tooltip("In meters per second.")]
     [SerializeField] float pathMoveSpeed = 2.0f;
     [SerializeField][Range(0.0f, 1.0f)] float playerRotationWeight = 0.2f;
-    //[Tooltip("Determines how much of the playerRotationWeight is influenced by the leading player. For example, a rotation weight (above variable) of 0.5 means the camera's rotation will be evenly split between the path and players, and a leading weight value of, say, 0.3 means the leading player will take up 30% of the initial 50% from the base player weight, whereas all other players will fill the rest. Note that this does round up when there's less players (e.g. leading weight of 0.3 will be considered 0.5 if there's only two players).")]
-    //[SerializeField][Range(0.0f, 1.0f)] float leadingPlayerRotationWeight = 0.3f;
-    //[Tooltip("Multiplier to determine how much the leading player's position affects the average player position to look toward.")]
-    //[SerializeField][Range(1.0f, 10.0f)] float leadingPlayerImportance = 2.0f;
     [SerializeField] bool zRotationLock = true;
 
     [Header("Difficulty")]
@@ -234,7 +229,8 @@ public class CameraController : MonoBehaviour
 
     void UpdateRotation(float deltaTime)
     {
-        if (PlayerManager.Players.Count == 0) return;
+        // Return if there are no players, or if the game is over or hasn't started yet.
+        if (PlayerManager.Players.Count == 0 || (GameManager.Instance != null && (GameManager.Instance.GameOver || !GameManager.Instance.GameStarted))) return;
 
         // Get average player position
         var avgPos = Vector3.zero;
@@ -251,7 +247,6 @@ public class CameraController : MonoBehaviour
         avgPos /= validCount;
 
         smoothedRotation.TargetValue = Quaternion.Lerp(uninfluencedRot, Quaternion.LookRotation((avgPos - transform.position).normalized, Vector3.up), playerRotationWeight);
-        //smoothedRotation.TargetValue = Quaternion.Euler(Vector3.Lerp(smoothedRotation.TargetValue.eulerAngles, Quaternion.LookRotation((avgPos - transform.position).normalized, Vector3.up).eulerAngles, playerRotationWeight));
 
         // Not the most elegant solution, but does for a prototype
         // Helpful since Slerp can change the Z-Axis depending on the provided time.

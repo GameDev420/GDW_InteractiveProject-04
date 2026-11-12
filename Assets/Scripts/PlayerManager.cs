@@ -44,6 +44,21 @@ public class PlayerManager : MonoBehaviour
         if (PlayerLeft != null) PlayerLeft.Invoke(controller);
     }
 
+    public static void RemovePlayer()
+    {
+        if (Players.Count == 0) return;
+        var player = Players[^1];
+        player.Remove();
+    }
+
+    public static void RemoveAllPlayers()
+    {
+        for (int i = Players.Count - 1; i >= 0; i--)
+        {
+            Players[i].Remove();
+        }
+    }
+
     // Ensures no data is kept between playmode sessions
     void ResetStaticFields()
     {

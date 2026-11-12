@@ -19,7 +19,7 @@ public class Menu : MonoBehaviour
         menuButtons = GetComponentsInChildren<Button>();
     }
 
-    void Open()
+    public virtual void Open()
     {
         if (animator != null) animator.SetTrigger(openAnimationTriggerName);
         else gameObject.SetActive(true);
@@ -28,7 +28,7 @@ public class Menu : MonoBehaviour
 
         if (onOpen != null) onOpen.Invoke();
     }
-    void Close()
+    public virtual void Close()
     {
         if (animator != null) animator.SetTrigger(closeAnimationTriggerName);
         else gameObject.SetActive(false);

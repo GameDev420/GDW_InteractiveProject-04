@@ -11,11 +11,11 @@ public struct BlobButtons
     public bool grappleheld;
 }
 
-
 /// <summary>
 /// Idea behind this is to be a sort of 'manager' for each player, handling general things like individual deaths.
 /// </summary>
-[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(PlayerInput), typeof(BlobController), typeof(TempMovement))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] GameObject visuals;
@@ -37,11 +37,18 @@ public class PlayerController : MonoBehaviour
 
     // Getters
     public bool IsDead => isDead;
-    public PlayerInput Input => playerInput;
+    public PlayerInput Input
+    {
+        get
+        {
+            if (playerInput == null) playerInput = GetComponent<PlayerInput>();
+            return playerInput;
+        }
+    }
 
     void Awake()
     {
-        playerInput = GetComponent<PlayerInput>();
+        if (playerInput == null) playerInput = GetComponent<PlayerInput>();
         blob = GetComponent<BlobController>();
         walking = GetComponent<TempMovement>();
         body = GetComponent<CharacterController>();

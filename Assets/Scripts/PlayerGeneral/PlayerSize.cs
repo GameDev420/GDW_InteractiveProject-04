@@ -1,10 +1,14 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerSize : MonoBehaviour
 {
     Vector3 initScale;
-
     float sizeMultiplier = 1.0f;
+    [SerializeField] UnityEvent<float> onSizeChanged;
+
+    public float SizeMultiplier => sizeMultiplier;
+    public UnityEvent<float> OnSizeChanged => onSizeChanged;
 
     private void Awake()
     {
@@ -16,5 +20,6 @@ public class PlayerSize : MonoBehaviour
         sizeMultiplier = multiplier;
 
         transform.localScale = initScale * multiplier;
+        if (onSizeChanged != null) onSizeChanged.Invoke(multiplier);
     }
 }

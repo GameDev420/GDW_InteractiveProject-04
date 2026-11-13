@@ -10,6 +10,11 @@ public class PowerUpComponent : MonoBehaviour
     [SerializeField] PowerUpData powerUpData;
     [SerializeField] LayerMask playerLayer;
     PowerUpInstance powerUpInstance;
+    /// <summary>
+    /// Determines whether the power up can be obtained by players.
+    /// Only activates once a player goes over it once, then deactivates when the next player interacts with it.
+    /// </summary>
+    bool activated = false;
 
     [SerializeField] float respawntime = 10f;
 
@@ -28,12 +33,19 @@ public class PowerUpComponent : MonoBehaviour
         }
 
         visuals.Init(powerUpInstance);
+        visuals.SetVisibility(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (playerLayer == (playerLayer | (1 << other.gameObject.layer)))
         {
+            if (!activated)
+            {
+                Activate();
+                return;
+            }
+
             var player = other.GetComponentInParent<PlayerController>();
 
             if (player != null && !powerUpInstance.CanPickup(new PowerUpArgs(player))) return;
@@ -53,6 +65,7 @@ public class PowerUpComponent : MonoBehaviour
 
         trigger.enabled = false;
         visuals.SetVisibility(false);
+        Deactivate();
     }
 
     // Name is misleading - changed this to replenish power up now
@@ -71,5 +84,16 @@ public class PowerUpComponent : MonoBehaviour
 
         trigger.enabled = true;
         visuals.SetVisibility(true);
+    }
+
+    void Activate()
+    {
+        activated = true;
+        visuals.SetVisibility(true);
+    }
+
+    void Deactivate()
+    {
+        activated = false;
     }
 }
